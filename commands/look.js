@@ -7,6 +7,18 @@ exports.command = function (rooms, items, players, npcs, Commands)
 	{
 		var room = rooms.getAt(player.getLocation());
 
+		function ucword(string) {
+    	return string.charAt(0).toUpperCase() + string.slice(1);
+		}
+
+		player.prompt_string = '%health/%max_healthH Exits:' + room.getExits().map(function(item, index) {
+			return ucword(item.direction) + ' ';
+		}) + '>';
+
+		player.combat_prompt = '<bold>[%health/%max_healthHP] 0--{======> %target_name: [%target_health/%target_max_health] Exits: </bold>\r\n>' + room.getExits().map(function(item, index) {
+			return ucword(item.direction) + ' ';
+		}) + '>';
+		
 		if (args) {
 			// Look at items in the room first
 			var thing = CommandUtil.findItemInRoom(items, args, room, player, true);
@@ -76,12 +88,12 @@ exports.command = function (rooms, items, players, npcs, Commands)
 			}
 		});
 
-		player.write('[');
-		player.writeL10n(l10n, 'EXITS');
-		player.write(': ');
-		room.getExits().forEach(function (exit) {
-			player.write(exit.direction + ' ');
-		});
-		player.say(']');
+		// player.write('[');
+		// player.writeL10n(l10n, 'EXITS');
+		// player.write(': ');
+		// room.getExits().forEach(function (exit) {
+		// 	player.write(exit.direction + ' ');
+		// });
+		// player.say(']');
 	}
 };
